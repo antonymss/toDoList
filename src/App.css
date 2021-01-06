@@ -1,0 +1,30 @@
+.App {
+  padding: 30px;
+  display: flex;
+}
+
+h3 {
+  color: orangered;
+}
+
+input:focus{
+  background-color: aqua;
+  color:black;
+}
+
+.App > div {
+  margin-right: 50px;
+}
+.error {
+  border: red 1px solid;
+}
+
+.error-message {
+  color: red;
+}
+.active-filter {
+  background-color: aqua;
+}
+.is-done {
+  opacity: 0.5;
+}
