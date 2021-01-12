@@ -15,29 +15,11 @@ type PropsType = {
     changeTaskTitle: (taskID: string, title: string, todoListID: string) => void
     filter: FilterValuesType
     removeTodolist: (todoListID: string) => void
+    changeTodolistTitle: (title: string, todoListID: string) => void
 }
 
 export function TodoList(props: PropsType) {
-    // const [title, setTitle] = useState<string>('')
-    // const [error, setError] = useState<string | null>(null)
-    //
-    // const addTask = () => {
-    //     const taskTitle = title.trim()
-    //     if (taskTitle) {
-    //         props.addTask(taskTitle, props.id)
-    //
-    //     } else {
-    //         setError('Title is required')
-    //     }
-    //     setTitle('')
-    // }
 
-    // const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    //     setTitle(e.currentTarget.value)
-    // }
-    // const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-    //     if (e.key === 'Enter') addTask()
-    // }
     const addTask = (title: string) => {
         props.addTask(title, props.id)
     }
@@ -53,23 +35,16 @@ export function TodoList(props: PropsType) {
     const removeTodolist = () => {
         props.removeTodolist(props.id)
     }
+    const ChangeTodolistTitle = (title:string)=>{
+        props.changeTodolistTitle(title,props.id)
+    }
     return (
         <div>
-            <h3>{props.title}
+            <h3><EditableSpan title={props.title} changeTitle={ChangeTodolistTitle}/>
                 <button onClick={removeTodolist}>x</button>
             </h3>
             <AddItemForm addItem={addTask}/>
-            {/*<div>*/}
-            {/*    <input*/}
-            {/*        value={title}*/}
-            {/*        // e.currentTarget == input*/}
-            {/*        onChange={onChangeHandler}*/}
-            {/*        onKeyPress={onKeyPressHandler}*/}
-            {/*        className={error ? 'error' : ''}*/}
-            {/*    />*/}
-            {/*    <button onClick={addTask}>+</button>*/}
-            {/*    {error && <div className={"error-message"}>{error}</div>}*/}
-            {/*</div>*/}
+
             <ul>
                 {
                     props.tasks.map(task => {

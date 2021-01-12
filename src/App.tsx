@@ -79,6 +79,7 @@ function App() {
             setTasks({...tasks})
         }
     }
+
     function changeTaskTitle(taskID: string, title: string, todoListID: string) {
         const todoListTasks = tasks[todoListID]
         const task = todoListTasks.find(t => t.id === taskID)
@@ -100,11 +101,19 @@ function App() {
             title: todolistTitle,
             filter: 'all'
         }
-        setTodoLists([...todoLists,newTodolist])
+        setTodoLists([...todoLists, newTodolist])
         setTasks({
             ...tasks,
-            [todolistID]:[]
+            [todolistID]: []
         })
+    }
+
+    function changeTodolistTitle(title: string, todoListID: string) {
+        const todolist = todoLists.find(tl => tl.id === todoListID)
+        if(todolist){
+            todolist.title = title
+            setTodoLists([...todoLists])
+        }
     }
 
 // UI
@@ -133,6 +142,7 @@ function App() {
                             filter={tl.filter}
                             removeTodolist={removeTodolist}
                             changeTaskTitle={changeTaskTitle}
+                            changeTodolistTitle={changeTodolistTitle}
                         />
                     )
                 })
