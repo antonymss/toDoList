@@ -12,6 +12,7 @@ type PropsType = {
     changeFilter: (filterValue: FilterValuesType, todoListID: string) => void
     addTask: (title: string, todoListID: string) => void
     changeStatus: (taskID: string, isDone: boolean, todoListID: string) => void
+    changeTaskTitle: (taskID: string, title: string, todoListID: string) => void
     filter: FilterValuesType
     removeTodolist: (todoListID: string) => void
 }
@@ -37,8 +38,8 @@ export function TodoList(props: PropsType) {
     // const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
     //     if (e.key === 'Enter') addTask()
     // }
-    const addTask = (title: string)=>{
-        props.addTask(title,props.id)
+    const addTask = (title: string) => {
+        props.addTask(title, props.id)
     }
     const onAllClickHandler = () => {
         props.changeFilter('all', props.id)
@@ -57,7 +58,7 @@ export function TodoList(props: PropsType) {
             <h3>{props.title}
                 <button onClick={removeTodolist}>x</button>
             </h3>
-            <AddItemForm addItem={addTask} />
+            <AddItemForm addItem={addTask}/>
             {/*<div>*/}
             {/*    <input*/}
             {/*        value={title}*/}
@@ -78,6 +79,9 @@ export function TodoList(props: PropsType) {
                         const changeStatus = (e: ChangeEvent<HTMLInputElement>) => {
                             props.changeStatus(task.id, e.currentTarget.checked, props.id)
                         }
+                        const changeTittle = (title: string) => {
+                            props.changeTaskTitle(task.id, title, props.id)
+                        }
                         return (
                             <li key={task.id}
                                 className={task.isDone ? 'is-done' : ''}>
@@ -87,7 +91,7 @@ export function TodoList(props: PropsType) {
                                     type="checkbox"
                                     checked={task.isDone}/>
                                 {/*<span>{task.title}</span>*/}
-                                <EditableSpan title={task.title}/>
+                                <EditableSpan title={task.title} changeTitle={changeTittle}/>
                                 <button onClick={removeTask}>x</button>
                             </li>
                         )
