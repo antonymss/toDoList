@@ -4,7 +4,7 @@ type AddItemFormType = {
     addItem: (title: string) => void
 }
 
-function AddItemForm(props:AddItemFormType) {
+function AddItemForm(props: AddItemFormType) {
     const [title, setTitle] = useState<string>('')
     const [error, setError] = useState<string | null>(null)
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {

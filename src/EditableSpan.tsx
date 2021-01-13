@@ -2,7 +2,7 @@ import React, {ChangeEvent, useState, KeyboardEvent} from "react";
 
 type EditableSpanPropsType = {
     title: string
-    changeTitle:(newTitle:string)=>void
+    changeTitle: (newTitle: string) => void
 }
 
 export function EditableSpan(props: EditableSpanPropsType) {
@@ -11,7 +11,7 @@ export function EditableSpan(props: EditableSpanPropsType) {
     const onEditMode = () => setEditMode(true)
     const offEditMode = () => {
         setEditMode(false)
-        if(title.trim()) {
+        if (title.trim()) {
             props.changeTitle(title.trim())
         }
     }

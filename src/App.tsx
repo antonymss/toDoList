@@ -115,7 +115,6 @@ function App() {
             setTodoLists([...todoLists])
         }
     }
-
 // UI
     return (
         <div className="App">

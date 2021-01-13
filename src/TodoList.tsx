@@ -35,8 +35,8 @@ export function TodoList(props: PropsType) {
     const removeTodolist = () => {
         props.removeTodolist(props.id)
     }
-    const ChangeTodolistTitle = (title:string)=>{
-        props.changeTodolistTitle(title,props.id)
+    const ChangeTodolistTitle = (title: string) => {
+        props.changeTodolistTitle(title, props.id)
     }
     return (
         <div>
