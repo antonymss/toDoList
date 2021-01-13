@@ -27,7 +27,7 @@ function AddItemForm(props: AddItemFormType) {
         <div>
             <input
                 value={title}
-                // e.currentTarget == input
+
                 onChange={onChangeHandler}
                 onKeyPress={onKeyPressHandler}
                 className={error ? 'error' : ''}
