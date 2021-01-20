@@ -2,6 +2,8 @@ import React, {ChangeEvent} from "react";
 import {FilterValuesType, TaskType} from "./App";
 import AddItemForm from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
+import {Delete} from "@material-ui/icons";
+import {Button, Checkbox, IconButton} from "@material-ui/core";
 
 type PropsType = {
     id: string
@@ -39,12 +41,14 @@ export function TodoList(props: PropsType) {
     }
     return (
         <div>
-            <h3><EditableSpan title={props.title} changeTitle={ChangeTodolistTitle}/>
-                <button onClick={removeTodolist}>x</button>
+            <h3 style={{textAlign: "center"}}>
+                <EditableSpan title={props.title} changeTitle={ChangeTodolistTitle}/>
+                {/*<button onClick={removeTodolist}>x</button>*/}
+                <IconButton onClick={removeTodolist}><Delete/></IconButton>
             </h3>
             <AddItemForm addItem={addTask}/>
 
-            <ul>
+            <ul style={{listStyle: "none", paddingLeft: '0px'}}>
                 {
                     props.tasks.map(task => {
                         const removeTask = () => {
@@ -59,14 +63,19 @@ export function TodoList(props: PropsType) {
                         return (
                             <li key={task.id}
                                 className={task.isDone ? 'is-done' : ''}>
-
-                                <input
+                                <Checkbox
+                                    color={"primary"}
                                     onChange={changeStatus}
-                                    type="checkbox"
-                                    checked={task.isDone}/>
+                                    checked={task.isDone}
+                                />
+                                {/*<input*/}
+                                {/*    onChange={changeStatus}*/}
+                                {/*    type="checkbox"*/}
+                                {/*    checked={task.isDone}/>*/}
                                 {/*<span>{task.title}</span>*/}
                                 <EditableSpan title={task.title} changeTitle={changeTittle}/>
-                                <button onClick={removeTask}>x</button>
+                                <IconButton onClick={removeTask}><Delete/></IconButton>
+                                {/*<button onClick={removeTask}>x</button>*/}
                             </li>
                         )
                     })
@@ -74,18 +83,29 @@ export function TodoList(props: PropsType) {
 
             </ul>
             <div>
-                <button
-                    className={props.filter === 'all' ? 'active-filter' : ''}
+                <Button
+                    style={{marginRight: '3px'}}
+                    size={"small"}
+                    variant={props.filter === 'all' ? 'contained' : 'outlined'}
+                    color={"primary"}
+                    // className={props.filter === 'all' ? 'active-filter' : ''}
                     onClick={onAllClickHandler}>All
-                </button>
-                <button
-                    className={props.filter === 'active' ? 'active-filter' : ''}
+                </Button>
+                <Button
+                    style={{marginRight: '3px'}}
+                    size={"small"}
+                    variant={props.filter === 'active' ? 'contained' : 'outlined'}
+                    color={"primary"}
+                    // className={props.filter === 'active' ? 'active-filter' : ''}
                     onClick={onActiveClickHandler}>Active
-                </button>
-                <button
-                    className={props.filter === 'completed' ? 'active-filter' : ''}
+                </Button>
+                <Button
+                    size={"small"}
+                    variant={props.filter === 'completed' ? 'contained' : 'outlined'}
+                    color={"primary"}
+                    // className={props.filter === 'completed' ? 'active-filter' : ''}
                     onClick={onCompletedClickHandler}>Completed
-                </button>
+                </Button>
             </div>
         </div>
     )
