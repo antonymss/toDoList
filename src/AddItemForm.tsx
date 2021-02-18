@@ -7,6 +7,9 @@ type AddItemFormType = {
 }
 
 const AddItemForm= React.memo ((props: AddItemFormType)=> {
+
+    console.log('AddItemForm called')
+
     const [title, setTitle] = useState<string>('')
     const [error, setError] = useState<string | null>(null)
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
