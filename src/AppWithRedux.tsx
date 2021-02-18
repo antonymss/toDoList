@@ -1,4 +1,4 @@
-import React, {useReducer, useState} from 'react';
+import React, {useCallback, useReducer, useState} from 'react';
 import './App.css';
 import {TodoList} from "./TodoList";
 import {v1} from "uuid";
@@ -38,26 +38,6 @@ export type TaskStateType = {
 //BLL
 function AppWithRedux() {
 
-    // const todoListID1 = v1()
-    // const todoListI2 = v1()
-
-    // const [todoLists, dispatchToTodolist] = useReducer(todolistsReducer,[
-    //     {id: todoListID1, title: 'What to learn', filter: 'all'},
-    //     {id: todoListI2, title: 'What to buy', filter: 'all'},
-    // ])
-    // const [tasks, dispatchToTasks] = useReducer(tasksReducer,{
-    //         [todoListID1]: [
-    //             {id: v1(), title: 'AAA', isDone: false},
-    //             {id: v1(), title: 'BBB', isDone: true},
-    //             {id: v1(), title: 'CCC', isDone: false},
-    //         ],
-    //         [todoListI2]: [
-    //             {id: v1(), title: 'III', isDone: true},
-    //             {id: v1(), title: 'EEE', isDone: false},
-    //             {id: v1(), title: 'FFF', isDone: true},]
-    //     }
-    // )
-
     const todoLists = useSelector<AppRootStateType, Array<TodoListType>>(state=>state.todolists)
     const tasks = useSelector<AppRootStateType, TaskStateType>(state=>state.tasks)
     const dispatch = useDispatch()
@@ -93,11 +73,11 @@ function AppWithRedux() {
 
     }
 
-    function addTodolist(todolistTitle: string) {
+    const addTodolist= useCallback ((todolistTitle: string)=> {
         const action = AddTodolistAC(todolistTitle)
         dispatch(action)
 
-    }
+    }, [])
 
     function changeTodolistTitle(title: string, todoListID: string) {
         const action = ChangeTodolistTitleAC(title,todoListID)
