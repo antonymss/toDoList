@@ -69,14 +69,10 @@ export function TodoList(props: PropsType) {
                                     onChange={changeStatus}
                                     checked={task.isDone}
                                 />
-                                {/*<input*/}
-                                {/*    onChange={changeStatus}*/}
-                                {/*    type="checkbox"*/}
-                                {/*    checked={task.isDone}/>*/}
-                                {/*<span>{task.title}</span>*/}
+
                                 <EditableSpan title={task.title} changeTitle={changeTittle}/>
                                 <IconButton onClick={removeTask}><Delete/></IconButton>
-                                {/*<button onClick={removeTask}>x</button>*/}
+
                             </li>
                         )
                     })
@@ -89,7 +85,7 @@ export function TodoList(props: PropsType) {
                     size={"small"}
                     variant={props.filter === 'all' ? 'contained' : 'outlined'}
                     color={"primary"}
-                    // className={props.filter === 'all' ? 'active-filter' : ''}
+
                     onClick={onAllClickHandler}>All
                 </Button>
                 <Button
@@ -97,14 +93,14 @@ export function TodoList(props: PropsType) {
                     size={"small"}
                     variant={props.filter === 'active' ? 'contained' : 'outlined'}
                     color={"primary"}
-                    // className={props.filter === 'active' ? 'active-filter' : ''}
+
                     onClick={onActiveClickHandler}>Active
                 </Button>
                 <Button
                     size={"small"}
                     variant={props.filter === 'completed' ? 'contained' : 'outlined'}
                     color={"primary"}
-                    // className={props.filter === 'completed' ? 'active-filter' : ''}
+
                     onClick={onCompletedClickHandler}>Completed
                 </Button>
             </div>
