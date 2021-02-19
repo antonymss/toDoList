@@ -73,7 +73,7 @@ function App() {
         setTasks({...tasks})
     }
 
-    function changeStatus(taskID: string, isDone: boolean, todoListID: string) {
+    function changeTaskStatus(taskID: string, isDone: boolean, todoListID: string) {
         const todoListTasks = tasks[todoListID]
         const task = todoListTasks.find(t => t.id === taskID)
         if (task) {
@@ -157,7 +157,7 @@ function App() {
                                             removeTask={removeTask}
                                             changeFilter={changeFilter}
                                             addTask={addTask}
-                                            changeStatus={changeStatus}
+                                            changeTaskStatus={changeTaskStatus}
                                             filter={tl.filter}
                                             removeTodolist={removeTodolist}
                                             changeTaskTitle={changeTaskTitle}
