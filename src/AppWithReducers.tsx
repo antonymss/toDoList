@@ -71,7 +71,7 @@ function AppWithReducers() {
         dispatchToTasks(action)
     }
 
-    function changeStatus(taskID: string, isDone: boolean, todoListID: string) {
+    function changeTaskStatus(taskID: string, isDone: boolean, todoListID: string) {
         const action = changeTaskStatusAC(taskID,isDone,todoListID)
         dispatchToTasks(action)
     }
@@ -137,7 +137,7 @@ function AppWithReducers() {
                                             removeTask={removeTask}
                                             changeFilter={changeFilter}
                                             addTask={addTask}
-                                            changeStatus={changeStatus}
+                                            changeTaskStatus={changeTaskStatus}
                                             filter={tl.filter}
                                             removeTodolist={removeTodolist}
                                             changeTaskTitle={changeTaskTitle}
