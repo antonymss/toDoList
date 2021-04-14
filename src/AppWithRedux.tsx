@@ -1,4 +1,4 @@
-import React, {useCallback, useReducer, useState} from 'react';
+import React, {useCallback, useEffect, useReducer, useState} from 'react';
 import './App.css';
 import {TodoList} from "./TodoList";
 import {v1} from "uuid";
@@ -14,6 +14,7 @@ import {
 import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from "./state/tasks-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./state/store";
+import {todolistAPI} from "./api/ todolist-api";
 
 export type  TaskType = {
     id: string
@@ -37,6 +38,14 @@ export type TaskStateType = {
 
 //BLL
 function AppWithRedux() {
+
+    useEffect(()=>{
+        debugger
+        todolistAPI.getTodolists()
+            .then((res)=>{
+                let todos = res.data
+            })
+    },[])
 
     const todoLists = useSelector<AppRootStateType, Array<TodoListType>>(state => state.todolists)
     const tasks = useSelector<AppRootStateType, TaskStateType>(state => state.tasks)
