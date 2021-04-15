@@ -9,7 +9,8 @@ const instance = axios.create({
 })
 
 export const todolistAPI = {
-    updateTodolist(todolistId: string, title: string) {
+    updateTodolist(title: string, todolistId: string ) {
+        debugger
         return instance.put<ResponseType>(`/todo-lists/${todolistId}`, {title})
 
     },
