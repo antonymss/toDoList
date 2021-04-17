@@ -71,7 +71,11 @@ export const UpdateTask = () => {
     const [newTitle, setNewTitle] = useState<string>('')
 
     const updateTaskTitle = () => {
-        taskAPI.updateTask(todolistId, taskId, newTitle)
+        taskAPI.updateTask(todolistId, taskId, {title:'', description:'',
+            status: 1,
+            priority:1,
+            startDate: '',
+            deadline:''})
             .then((res) => {
                 setState(res.data)
             })}
