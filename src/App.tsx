@@ -2,7 +2,16 @@ import React, {useCallback, useEffect} from 'react';
 import './App.css';
 import {TodoList} from "./TodoList";
 import AddItemForm from "./AddItemForm";
-import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
+import {
+    AppBar,
+    Button,
+    Container,
+    Grid,
+    IconButton, LinearProgress,
+    Paper,
+    Toolbar,
+    Typography
+} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
 import {
     addTodolistTC,
@@ -104,7 +113,7 @@ dispatch(setTodosTC())
                     <Button color="inherit">Login</Button>
                 </Toolbar>
             </AppBar>
-
+            <LinearProgress color="secondary" />
             <Container fixed>
                 <Grid container style={{padding: '10px'}}>
                     <AddItemForm addItem={addTodolist}/>
