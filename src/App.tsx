@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect} from 'react';
 import './App.css';
 import {TodoList} from "./TodoList";
-import AddItemForm from "./AddItemForm";
+import AddItemForm from "./components/AddItemForm/AddItemForm";
 import {
     AppBar,
     Button,
@@ -16,15 +16,16 @@ import {Menu} from "@material-ui/icons";
 import {
     addTodolistTC,
     ChangeTodolistFilterAC,
-    changeTodolistTitleTC,
+    changeTodolistTitleTC, fetchTodolistsTC,
     removeTodolistTC,
-    setTodosTC,
     TodolistDomainType
 } from "./state/todolists-reducer";
 import {addTaskTC, changeTaskTitleTC, removeTaskTC, updateTaskStatusTC} from "./state/tasks-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./state/store";
 import {TaskStatuses, TaskType} from "./api/task-api";
+import {RequestStatusType} from "./app-reducer";
+import {ErrorSnackbar} from "./components/ErrorSnackbar/ErrorSnackbar";
 
 // export type  TaskType = {
 //     id: string
@@ -50,16 +51,16 @@ export type TaskStateType = {
 function App() {
 
     useEffect(() => {
-dispatch(setTodosTC())
+        dispatch(fetchTodolistsTC())
 
     }, [])
-
+    const status = useSelector<AppRootStateType,RequestStatusType>(state => state.app.status)
     const todoLists = useSelector<AppRootStateType, Array<TodolistDomainType>>(state => state.todolists)
     const tasks = useSelector<AppRootStateType, TaskStateType>(state => state.tasks)
     const dispatch = useDispatch()
 
     const removeTask = useCallback((taskID: string, todoListID: string) => {
-        dispatch(removeTaskTC(taskID,todoListID))
+        dispatch(removeTaskTC(taskID, todoListID))
     }, [dispatch])
 
     const changeFilter = useCallback((filterValue: FilterValuesType, todoListID: string) => {
@@ -69,7 +70,7 @@ dispatch(setTodosTC())
 
     const addTask = useCallback((newTaskTitle: string, todoListID: string) => {
 
-        dispatch(addTaskTC(todoListID,newTaskTitle ))
+        dispatch(addTaskTC(todoListID, newTaskTitle))
     }, [dispatch])
 
     const changeTaskStatus = useCallback((taskID: string, status: TaskStatuses, todoListID: string) => {
@@ -96,12 +97,13 @@ dispatch(setTodosTC())
 
     const changeTodolistTitle = useCallback((title: string, todoListID: string) => {
         // const action = ChangeTodolistTitleAC(title, todoListID)
-        dispatch(changeTodolistTitleTC(title,todoListID))
+        dispatch(changeTodolistTitleTC(title, todoListID))
     }, [dispatch])
 
 // UI
     return (
         <div className="App">
+            <ErrorSnackbar/>
             <AppBar position="static">
                 <Toolbar>
                     <IconButton edge="start" color="inherit" aria-label="menu">
@@ -113,7 +115,8 @@ dispatch(setTodosTC())
                     <Button color="inherit">Login</Button>
                 </Toolbar>
             </AppBar>
-            <LinearProgress color="secondary" />
+            {status === "loading" && <LinearProgress color="secondary"/> }
+
             <Container fixed>
                 <Grid container style={{padding: '10px'}}>
                     <AddItemForm addItem={addTodolist}/>
