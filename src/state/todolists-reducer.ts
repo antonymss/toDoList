@@ -2,6 +2,7 @@ import {FilterValuesType, TodoListType} from '../App';
 import {v1} from 'uuid';
 import {todolistAPI, TodolistType} from "../api/ todolist-api";
 import {Dispatch} from "redux";
+import {setAppStatusAC, setAppStatusType} from "../app-reducer";
 
 export type RemoveTodolistActionType = {
     type: 'REMOVE-TODOLIST',
@@ -24,7 +25,7 @@ export type ChangeTodolistFilterActionType = {
 }
 
 type ActionsType = RemoveTodolistActionType | AddTodolistActionType | ChangeTodolistTitleActionType
-    | ChangeTodolistFilterActionType | SetTodoistsActionType
+    | ChangeTodolistFilterActionType | SetTodoistsActionType | setAppStatusType
 
 const initialState: Array<TodoListType> = []
 
@@ -75,30 +76,37 @@ export const ChangeTodolistFilterAC = (todolistId: string, filter: FilterValuesT
 export const setTodolistsAC = (todos: TodolistType[]) => ({type: 'SET-TODOS', todos} as const)
 export type SetTodoistsActionType = ReturnType<typeof setTodolistsAC>
 
-export const setTodosTC=()=> (dispatch: Dispatch)=>{
+export const fetchTodolistsTC=()=> (dispatch: Dispatch)=>{
+    dispatch(setAppStatusAC('loading'))
     todolistAPI.getTodolists()
         .then((res) => {
             // let todos = res.data
+            dispatch(setAppStatusAC('succeeded'))
             dispatch(setTodolistsAC(res.data))
+
         })
 }
 export const removeTodolistTC=(todoListID: string)=>(dispatch: Dispatch)=>{
+    dispatch(setAppStatusAC('loading'))
     todolistAPI.deleteTodolist(todoListID)
         .then((res)=>{
+            dispatch(setAppStatusAC('succeeded'))
             dispatch(RemoveTodolistAC(todoListID))
         })
 }
 export const addTodolistTC=(todolistTitle: string)=>(dispatch:Dispatch)=>{
+    dispatch(setAppStatusAC('loading'))
     todolistAPI.createTodolist(todolistTitle)
         .then((res)=>{
+            dispatch(setAppStatusAC('succeeded'))
             dispatch(AddTodolistAC(todolistTitle))
         })
 }
 export const changeTodolistTitleTC=(title: string, todoListID: string)=>(dispatch:Dispatch)=>{
-    debugger
+    dispatch(setAppStatusAC('loading'))
     todolistAPI.updateTodolist(title, todoListID )
         .then((res)=>{
-            debugger
+            dispatch(setAppStatusAC('succeeded'))
         dispatch(ChangeTodolistTitleAC(todoListID,title))
     })
 }
