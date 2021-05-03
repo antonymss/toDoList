@@ -151,10 +151,10 @@ export const addTaskTC = (todoListID: string, newTaskTitle: string) => (dispatch
             }else{
                 if(res.data.messages.length){
                     dispatch(setAppErrorAC(res.data.messages[0]))
-                    dispatch(setAppStatusAC('failed'))
+                } else{
+                    dispatch(setAppErrorAC('error'))
                 }
-                dispatch(setAppErrorAC(res.data.messages[0]))
-                dispatch(setAppStatusAC('succeeded'))
+                dispatch(setAppStatusAC('failed'))
             }
         })
 }
