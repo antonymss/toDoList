@@ -3,7 +3,7 @@ import {AddTodolistActionType, RemoveTodolistActionType, SetTodoistsActionType} 
 import {Dispatch} from "redux";
 import {taskAPI, TaskPriorities, TaskStatuses, TaskType, UpdateTaskModelType} from "../api/task-api";
 import {AppRootStateType} from "./store";
-import {setAppStatusAC, setAppStatusType} from "../app-reducer";
+import {setAppErrorAC, setAppErrorType, setAppStatusAC, setAppStatusType} from "../app-reducer";
 
 
 export type ActionsType =
@@ -15,7 +15,8 @@ export type ActionsType =
     | RemoveTodolistActionType
     | SetTodoistsActionType
     | SetTasksActionType
-| setAppStatusType
+    | setAppStatusType
+    | setAppErrorType
 
 type ChangeTaskTitleActionType = {
     type: 'CHANGE-TASK-TITLE'
@@ -81,7 +82,7 @@ export function tasksReducer(state: TaskStateType = initialState, action: Action
                 ...state,
                 [action.todolistID]: state[action.todolistID]
                     .map(t => t.id === action.taskID ? {...t, ...action.model} : t)
-        }
+            }
         case "ADD-TODOLIST": {
             const stateCopy = {...state}
             stateCopy[action.todolistId] = []
@@ -143,21 +144,26 @@ export const addTaskTC = (todoListID: string, newTaskTitle: string) => (dispatch
     dispatch(setAppStatusAC('loading'))
     taskAPI.createTask(todoListID, newTaskTitle)
         .then((res) => {
-            dispatch(setAppStatusAC('succeeded'))
-            const task = res.data.data.item
-            dispatch(addTaskAC(task))
+            if (res.data.resultCode === 0){
+                const task = res.data.data.item
+                dispatch(addTaskAC(task))
+                dispatch(setAppStatusAC('succeeded'))
+            }else{
+                dispatch(setAppErrorAC(res.data.messages[0]))
+                dispatch(setAppStatusAC('succeeded'))
+            }
         })
 }
-export const changeTaskTitleTC=(taskID: string, model: UpdateDomainTaskModelType , todoListID: string)=>(dispatch: Dispatch, getState:()=> AppRootStateType) =>{
+export const changeTaskTitleTC = (taskID: string, model: UpdateDomainTaskModelType, todoListID: string) => (dispatch: Dispatch, getState: () => AppRootStateType) => {
     const state = getState()
-    const task = state.tasks[todoListID].find(t=>t.id === taskID)
-    if(!task){
+    const task = state.tasks[todoListID].find(t => t.id === taskID)
+    if (!task) {
         console.warn('task not found in the state')
         return
     }
-    const apiModel: UpdateTaskModelType ={
+    const apiModel: UpdateTaskModelType = {
         deadline: task.deadline,
-        description:task.description,
+        description: task.description,
         priority: task.priority,
         status: task.status,
         startDate: task.startDate,
@@ -165,10 +171,10 @@ export const changeTaskTitleTC=(taskID: string, model: UpdateDomainTaskModelType
         ...model
     }
     dispatch(setAppStatusAC('loading'))
-    taskAPI.updateTask(todoListID,taskID,apiModel)
-        .then ((res)=>{
+    taskAPI.updateTask(todoListID, taskID, apiModel)
+        .then((res) => {
             dispatch(setAppStatusAC('succeeded'))
-            dispatch(changeTaskTitleAC(taskID,apiModel,todoListID ))
+            dispatch(changeTaskTitleAC(taskID, apiModel, todoListID))
         })
 }
 
