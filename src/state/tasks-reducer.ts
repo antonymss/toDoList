@@ -144,14 +144,14 @@ export const addTaskTC = (todoListID: string, newTaskTitle: string) => (dispatch
     dispatch(setAppStatusAC('loading'))
     taskAPI.createTask(todoListID, newTaskTitle)
         .then((res) => {
-            if (res.data.resultCode === 0){
+            if (res.data.resultCode === 0) {
                 const task = res.data.data.item
                 dispatch(addTaskAC(task))
                 dispatch(setAppStatusAC('succeeded'))
-            }else{
-                if(res.data.messages.length){
+            } else {
+                if (res.data.messages.length) {
                     dispatch(setAppErrorAC(res.data.messages[0]))
-                } else{
+                } else {
                     dispatch(setAppErrorAC('error'))
                 }
                 dispatch(setAppStatusAC('failed'))
