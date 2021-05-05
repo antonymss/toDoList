@@ -8,12 +8,13 @@ import {Task} from "./Task";
 import {useDispatch} from "react-redux";
 import {fetchTasksTC} from "./state/tasks-reducer";
 import {TaskStatuses, TaskType} from "./api/task-api";
+import {RequestStatusType} from "./app-reducer";
 
 type PropsType = {
     id: string
     title: string
     tasks: Array<TaskType>
-
+    entityStatus: RequestStatusType
     changeFilter: (filterValue: FilterValuesType, todoListID: string) => void
     addTask: (title: string, todoListID: string) => void
     changeTaskStatus: (taskID: string, status: TaskStatuses, todoListID: string) => void
@@ -26,9 +27,9 @@ type PropsType = {
 
 export const TodoList = React.memo((props: PropsType) => {
     const dispatch = useDispatch()
-    useEffect(()=>{
+    useEffect(() => {
         dispatch(fetchTasksTC(props.id))
-    },[])
+    }, [])
 
     console.log('Todolist called')
     const addTask = useCallback((title: string) => {
@@ -64,9 +65,10 @@ export const TodoList = React.memo((props: PropsType) => {
             <h3 style={{textAlign: "center"}}>
                 <EditableSpan title={props.title} changeTitle={ChangeTodolistTitle}/>
 
-                <IconButton onClick={removeTodolist}><Delete/></IconButton>
+                <IconButton onClick={removeTodolist} disabled={props.entityStatus === 'loading'}>
+                    <Delete/></IconButton>
             </h3>
-            <AddItemForm addItem={addTask}/>
+            <AddItemForm addItem={addTask} entityStatus={props.entityStatus} />
 
             <ul style={{listStyle: "none", paddingLeft: '0px'}}>
                 {
