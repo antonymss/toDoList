@@ -137,12 +137,14 @@ function App() {
                                         <TodoList
                                             id={tl.id}
                                             title={tl.title}
+                                            filter={tl.filter}
+                                            entityStatus={tl.entityStatus}
+
                                             tasks={tasksForTodoList}
                                             removeTask={removeTask}
                                             changeFilter={changeFilter}
                                             addTask={addTask}
                                             changeTaskStatus={changeTaskStatus}
-                                            filter={tl.filter}
                                             removeTodolist={removeTodolist}
                                             changeTaskTitle={changeTaskTitle}
                                             changeTodolistTitle={changeTodolistTitle}
