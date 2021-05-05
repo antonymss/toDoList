@@ -32,7 +32,7 @@ export type TodolistType = {
     order: number
     title: string
 }
-type ResponseType<D={}> = {
+export type ResponseType<D={}> = {
     resultCode: number
     fieldsError: string[]
     messages: Array<string>
