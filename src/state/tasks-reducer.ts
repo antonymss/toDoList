@@ -4,6 +4,8 @@ import {Dispatch} from "redux";
 import {taskAPI, TaskPriorities, TaskStatuses, TaskType, UpdateTaskModelType} from "../api/task-api";
 import {AppRootStateType} from "./store";
 import {setAppErrorAC, setAppErrorType, setAppStatusAC, setAppStatusType} from "../app-reducer";
+import {AxiosError} from "axios";
+import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
 
 
 export type ActionsType =
@@ -41,6 +43,12 @@ type AddTaskActionType = {
     task: TaskType
 
 }
+enum ResultResponseCodes {
+    success= 0,
+    failed= 1,
+    captcha = 10
+}
+
 type SetTasksActionType = ReturnType<typeof setTasksAC>
 
 const initialState: TaskStateType = {}
@@ -140,22 +148,28 @@ export const removeTaskTC = (taskId: string, todolistId: string) => (dispatch: D
             dispatch(action)
         })
 }
-export const addTaskTC = (todoListID: string, newTaskTitle: string) => (dispatch: Dispatch) => {
+export const addTaskTC = (todoListID: string, newTaskTitle: string) => (dispatch: Dispatch<ActionsType>) => {
     dispatch(setAppStatusAC('loading'))
     taskAPI.createTask(todoListID, newTaskTitle)
         .then((res) => {
-            if (res.data.resultCode === 0) {
+            if (res.data.resultCode === ResultResponseCodes.success) {
                 const task = res.data.data.item
                 dispatch(addTaskAC(task))
                 dispatch(setAppStatusAC('succeeded'))
             } else {
-                if (res.data.messages.length) {
-                    dispatch(setAppErrorAC(res.data.messages[0]))
-                } else {
-                    dispatch(setAppErrorAC('error'))
-                }
-                dispatch(setAppStatusAC('failed'))
+                // if (res.data.messages.length) {
+                //     dispatch(setAppErrorAC(res.data.messages[0]))
+                // } else {
+                //     dispatch(setAppErrorAC('error'))
+                // }
+                // dispatch(setAppStatusAC('failed'))
+                handleServerAppError(res.data, dispatch)
             }
+        })
+        .catch((err:AxiosError)=>{
+            // dispatch(setAppErrorAC(err.message))
+            // dispatch(setAppStatusAC('failed'))
+            handleServerNetworkError(err.message, dispatch)
         })
 }
 export const changeTaskTitleTC = (taskID: string, model: UpdateDomainTaskModelType, todoListID: string) => (dispatch: Dispatch, getState: () => AppRootStateType) => {
