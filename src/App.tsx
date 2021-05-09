@@ -26,6 +26,8 @@ import {AppRootStateType} from "./state/store";
 import {TaskStatuses, TaskType} from "./api/task-api";
 import {RequestStatusType} from "./app-reducer";
 import {ErrorSnackbar} from "./components/ErrorSnackbar/ErrorSnackbar";
+import {Route} from 'react-router-dom';
+import {Login} from "./features/Login/Login";
 
 // export type  TaskType = {
 //     id: string
@@ -54,7 +56,7 @@ function App() {
         dispatch(fetchTodolistsTC())
 
     }, [])
-    const status = useSelector<AppRootStateType,RequestStatusType>(state => state.app.status)
+    const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
     const todoLists = useSelector<AppRootStateType, Array<TodolistDomainType>>(state => state.todolists)
     const tasks = useSelector<AppRootStateType, TaskStateType>(state => state.tasks)
     const dispatch = useDispatch()
@@ -115,8 +117,9 @@ function App() {
                     <Button color="inherit">Login</Button>
                 </Toolbar>
             </AppBar>
-            {status === "loading" && <LinearProgress color="secondary"/> }
-
+            {status === "loading" && <LinearProgress color="secondary"/>}
+            <Route exact path={'/'} render={() => <TodoList demo={demo}/>}/>
+            <Route path={'/login'} render={() => <Login/>}/>
             <Container fixed>
                 <Grid container style={{padding: '10px'}}>
                     <AddItemForm addItem={addTodolist}/>
@@ -126,7 +129,7 @@ function App() {
                         todoLists.map(tl => {
                             let tasksForTodoList = tasks[tl.id]
                             // if (tl.filter === 'active') {
-                            //     tasksForTodoList = tasks[tl.id].filter(t => t.isDone === false)
+                            //     tasksFrTodoList = tasks[tl.id].filter(t => t.isDone === false)
                             // }
                             // if (tl.filter === 'completed') {
                             //     tasksForTodoList = tasks[tl.id].filter(t => t.isDone === true)
