@@ -118,8 +118,8 @@ function App() {
                 </Toolbar>
             </AppBar>
             {status === "loading" && <LinearProgress color="secondary"/>}
-            <Route exact path={'/'} render={() => <TodoList demo={demo}/>}/>
-            <Route path={'/login'} render={() => <Login/>}/>
+            {/*<Route exact path={'/'} render={() => <TodoList demo={demo}/>}/>*/}
+            {/*<Route path={'/login'} render={() => <Login/>}/>*/}
             <Container fixed>
                 <Grid container style={{padding: '10px'}}>
                     <AddItemForm addItem={addTodolist}/>
